@@ -26,6 +26,13 @@ Those tests cover the core functionality of `intrusive_ptr`, including:
 * Reference-counted object lifetime
 * Edge cases and regression tests
 
+## Automation
+
+The project uses [GitHub Actions](https://github.com/features/actions) to automate development and release workflows.
+
+The [verify.yml](.github/workflows/verify.yml) workflow runs automatically on every push and pull request. It checks code formatting, builds the library on **Linux** and **Windows**, and runs the unit test suite on those platforms.
+
+Release workflows automate the process of publishing new versions, helping keep releases consistent and reproducible.
 
 ## License
 
