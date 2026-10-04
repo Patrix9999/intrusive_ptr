@@ -59,6 +59,7 @@ TEST(intrusive_ptr, copy_constructor_release_ref) {
   EXPECT_EQ(first->RefCount(), 1);
 
   {
+    // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
     crimson_cell::intrusive_ptr second{first};
 
     EXPECT_EQ(first->RefCount(), 2);
