@@ -4,6 +4,16 @@
 [![Release](https://img.shields.io/github/v/release/Patrix9999/intrusive_ptr)](https://github.com/Patrix9999/intrusive_ptr/releases)
 [![codecov](https://codecov.io/gh/Patrix9999/intrusive_ptr/graph/badge.svg)](https://codecov.io/gh/Patrix9999/intrusive_ptr)
 
+## About
+
+**intrusive_ptr** is a lightweight, header-only intrusive smart pointer implementation for modern C++.
+
+It provides reference-counted ownership without requiring a separate control block, keeping the smart pointer itself to a single pointer-sized member.  
+Reference counting is stored directly in the managed object, making the library suitable for applications where minimal overhead and predictable memory usage are important.
+
+The library is designed to be simple, modern, and easy to integrate into existing C++ projects.
+
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
