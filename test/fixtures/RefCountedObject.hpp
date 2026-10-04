@@ -3,10 +3,11 @@
 #include <cassert>
 
 class RefCountedObject {
- public:
+public:
   RefCountedObject() noexcept = default;
 
   void AddRef() noexcept { ++ref_count_; }
+
   void Release() noexcept {
     assert(ref_count_ > 0);
 
@@ -14,12 +15,14 @@ class RefCountedObject {
     if (ref_count_ == 0) delete this;
   }
 
-  [[nodiscard]] constexpr int RefCount() const noexcept { return ref_count_; }
+  [[nodiscard]] constexpr int RefCount() const noexcept {
+    return ref_count_;
+  }
 
- protected:
+protected:
   virtual ~RefCountedObject() noexcept = default;
 
- private:
+private:
   int ref_count_ = 0;
 };
 
