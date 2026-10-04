@@ -1,17 +1,19 @@
 include(GoogleTest)
 include(FetchContent)
 
-FetchContent_Declare(googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG v1.18.0
-)
+block(PROPAGATE GTest::gtest_main)
+    FetchContent_Declare(googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG v1.18.0
+    )
 
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-if (WIN32)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-endif()
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    if (WIN32)
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    endif()
 
-FetchContent_MakeAvailable(googletest)
+    FetchContent_MakeAvailable(googletest)
+endblock()
 
 add_executable(intrusive_ptr_test)
 
