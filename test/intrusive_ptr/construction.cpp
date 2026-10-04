@@ -4,16 +4,6 @@
 
 #include "fixtures/RefCountedObject.hpp"
 
-// ReSharper disable once CppUseInternalLinkage
-void intrusive_ptr_add_ref(RefCountedObject* object) noexcept {
-  object->AddRef();
-}
-
-// ReSharper disable once CppUseInternalLinkage
-void intrusive_ptr_release(RefCountedObject* object) noexcept {
-  object->Release();
-}
-
 TEST(intrusive_ptr, default_constructor) {
   crimson_cell::intrusive_ptr<RefCountedObject> ptr;
 
@@ -25,7 +15,7 @@ TEST(intrusive_ptr, add_ref_constructor) {
   crimson_cell::intrusive_ptr ptr{new RefCountedObject};
 
   ASSERT_TRUE(ptr);
-  EXPECT_EQ(ptr.get()->RefCount(), 1);
+  EXPECT_EQ(ptr->RefCount(), 1);
 }
 
 TEST(intrusive_ptr, no_add_ref_constructor) {
@@ -47,7 +37,7 @@ TEST(intrusive_ptr, copy_constructor_add_ref) {
   crimson_cell::intrusive_ptr second{first};
 
   ASSERT_TRUE(second);
-  EXPECT_EQ(second.get(), first.get());
+  EXPECT_EQ(second, first);
   EXPECT_EQ(first->RefCount(), 2);
   EXPECT_EQ(second->RefCount(), 2);
 }

@@ -13,3 +13,6 @@ class RefCountedObject {
  private:
   int ref_count_ = 0;
 };
+
+void intrusive_ptr_add_ref(RefCountedObject* object) noexcept;
+void intrusive_ptr_release(RefCountedObject* object) noexcept;

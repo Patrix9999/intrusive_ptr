@@ -10,3 +10,11 @@ void RefCountedObject::Release() noexcept {
   --ref_count_;
   if (ref_count_ == 0) delete this;
 }
+
+void intrusive_ptr_add_ref(RefCountedObject* object) noexcept {
+  object->AddRef();
+}
+
+void intrusive_ptr_release(RefCountedObject* object) noexcept {
+  object->Release();
+}
