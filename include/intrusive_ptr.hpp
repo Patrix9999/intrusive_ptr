@@ -95,6 +95,7 @@ void intrusive_ptr<T>::reset(T *p)
     intrusive_ptr temp(p);
     swap(temp);
 }
+
 template <class T>
 T *intrusive_ptr<T>::get() const noexcept
 {
@@ -109,37 +110,50 @@ T *intrusive_ptr<T>::detach() noexcept
     return result;
 }
 
-template <class T> T &intrusive_ptr<T>::operator*() const noexcept
+template <class T>
+T &intrusive_ptr<T>::operator*() const noexcept
 {
     return *ptr_;
 }
 
-template <class T> T *intrusive_ptr<T>::operator->() const noexcept
+template <class T>
+T *intrusive_ptr<T>::operator->() const noexcept
 {
     return ptr_;
 }
 
-template <class T> intrusive_ptr<T>::operator bool() const noexcept
+template <class T>
+intrusive_ptr<T>::operator bool() const noexcept
 {
     return ptr_ != nullptr;
 }
 
-template <class T> void intrusive_ptr<T>::swap(intrusive_ptr &other) noexcept
+template <class T>
+void intrusive_ptr<T>::swap(intrusive_ptr &other) noexcept
 {
     std::swap(ptr_, other.ptr_);
 }
 
-template <class T, class U> intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const & p)
+template <class T, class U>
+intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const & p)
 {
     return static_cast<T *>(p.get());
 }
 
-template<class T, class U> intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const & p)
+template<class T, class U>
+intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const & p)
 {
     return const_cast<T *>(p.get());
 }
 
-template<class T, class U> intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const & p)
+template<class T, class U>
+intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const & p)
 {
     return dynamic_cast<T *>(p.get());
+}
+
+template<class T, class U>
+intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p)
+{
+    return reinterpret_cast<T*>(p.get());
 }
