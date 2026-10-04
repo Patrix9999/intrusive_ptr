@@ -1,5 +1,6 @@
 #pragma once
 
+#include <compare>
 #include <utility>
 
 // declaration
@@ -115,6 +116,18 @@ void intrusive_ptr<T>::swap(intrusive_ptr& other) noexcept {
 }
 
 // global utilities
+
+template <class T, class U>
+constexpr bool operator==(const intrusive_ptr<T>& lhs,
+                          const intrusive_ptr<U>& rhs) noexcept {
+  return lhs.get() == rhs.get();
+}
+
+template <class T, class U>
+constexpr std::strong_ordering operator<=>(
+    const intrusive_ptr<T>& lhs, const intrusive_ptr<U>& rhs) noexcept {
+  return lhs.get() <=> rhs.get();
+}
 
 template <class T, class U>
 intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
