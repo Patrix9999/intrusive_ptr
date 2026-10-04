@@ -156,3 +156,10 @@ intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
 }
 
 }  // namespace crimson_cell
+
+template <typename T>
+struct std::hash<crimson_cell::intrusive_ptr<T>> {
+  size_t operator()(const crimson_cell::intrusive_ptr<T>& ptr) const noexcept {
+    return std::hash<T*>{}(ptr.get());
+  }
+};
