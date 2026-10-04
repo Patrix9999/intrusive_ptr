@@ -62,19 +62,13 @@ intrusive_ptr<T>::~intrusive_ptr() {
 
 template <class T>
 intrusive_ptr<T>& intrusive_ptr<T>::operator=(const intrusive_ptr& other) {
-  intrusive_ptr temp(other);
-  swap(temp);
+  intrusive_ptr(other).swap(*this);
   return *this;
 }
 
 template <class T>
 intrusive_ptr<T>& intrusive_ptr<T>::operator=(intrusive_ptr&& other) noexcept {
-  if (this != &other) {
-    reset();
-    ptr_ = other.ptr_;
-    other.ptr_ = nullptr;
-  }
-
+  intrusive_ptr(std::move(other)).swap(*this);
   return *this;
 }
 
@@ -115,6 +109,8 @@ template <class T>
 void intrusive_ptr<T>::swap(intrusive_ptr& other) noexcept {
   std::swap(ptr_, other.ptr_);
 }
+
+// global utilities
 
 template <class T, class U>
 intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
