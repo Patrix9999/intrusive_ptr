@@ -19,7 +19,7 @@ jobs:
 
       - name: Check code formatting
         run: |
-          shopt -s globstar
+          shopt -s globstar nullglob
           clang-format --dry-run -Werror **/*.cpp **/*.h **/*.hpp
 
   test_linux:
