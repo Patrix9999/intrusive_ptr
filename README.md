@@ -6,7 +6,7 @@
 
 ## About
 
-[crimson_cell::intrusive_ptr](https://github.com/Patrix9999/intrusive_ptr) is a lightweight, header-only intrusive smart pointer implementation for modern C++.
+[crimson_cell::intrusive_ptr](https://github.com/Patrix9999/intrusive_ptr) is a lightweight, header-only intrusive smart pointer implementation for modern C++ inspired by [boost implementation](https://www.boost.org/doc/libs/latest/libs/smart_ptr/doc/html/smart_ptr.html#intrusive_ptr).
 
 It provides reference-counted ownership without requiring a separate control block, keeping the smart pointer itself to a single pointer-sized member. Reference counting is stored directly in the managed object, making the library suitable for applications where minimal overhead and predictable memory usage are important.
 
