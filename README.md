@@ -31,6 +31,19 @@ With `intrusive_ptr`:
 
 The trade-off is that the managed type must explicitly participate in the reference-counting mechanism.
 
+## Why not use it?
+
+`intrusive_ptr` is designed for objects that implement their own reference-counting mechanism. If your object does not already use intrusive reference counting, [std::shared_ptr](https://en.cppreference.com/cpp/memory/shared_ptr) is usually the more convenient choice.
+
+You may want to use `std::shared_ptr` instead when:
+
+* Your object does not implement its own reference counting.
+* You need **thread-safe** reference-count manipulation out of the box.
+* You want to keep lifetime management completely separate from the managed object's implementation.
+* You need to manage arbitrary types without requiring them to participate in the ownership mechanism.
+
+In short, `intrusive_ptr` is best suited for objects that already own their reference-counting mechanism. If you simply need shared ownership of an otherwise ordinary type, `std::shared_ptr` is generally the simpler choice.
+
 ## Unit Tests
 
 The project includes a comprehensive unit test suite built with [GoogleTest](https://github.com/google/googletest).
