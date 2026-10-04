@@ -117,6 +117,12 @@ void intrusive_ptr<T>::swap(intrusive_ptr& other) noexcept {
 
 // global utilities
 
+template <class T>
+constexpr bool operator==(const intrusive_ptr<T>& lhs,
+                          const std::nullptr_t rhs) noexcept {
+  return lhs.get() == rhs;
+}
+
 template <class T, class U>
 constexpr bool operator==(const intrusive_ptr<T>& lhs,
                           const intrusive_ptr<U>& rhs) noexcept {
