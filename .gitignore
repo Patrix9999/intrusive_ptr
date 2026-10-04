@@ -1,0 +1,7 @@
+# Project specific local files
+.vs/
+.vscode/
+.idea/
+
+# Build
+/out/
