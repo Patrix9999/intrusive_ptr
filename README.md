@@ -12,6 +12,25 @@ It provides reference-counted ownership without requiring a separate control blo
 
 The library is designed to be simple, modern, and easy to integrate into existing projects.
 
+## Why use it?
+
+`intrusive_ptr` is intended for class objects that implement their own reference counting. The reference count is stored directly in the object, allowing the smart pointer to participate in the object's existing lifetime-management mechanism.
+
+This is particularly useful when working with APIs or object models that already expose `AddRef`/`Release`-style ownership.
+
+Using [std::shared_ptr](https://en.cppreference.com/cpp/memory/shared_ptr) in such systems can require maintaining two separate ownership mechanisms: the object's internal reference count and `shared_ptr`'s external control block. Keeping both mechanisms synchronized is tedious and fragile, and can lead to incorrect lifetime management.
+
+With `intrusive_ptr`:
+
+* **The object owns its reference count** — `AddRef`/`Release` operate directly on the managed object.
+* **No duplicated ownership state** — There is no separate `shared_ptr` control block that must be kept in sync.
+* **Minimal footprint** — The `intrusive_ptr` itself contains only a single pointer.
+* **No additional allocation** — No separate control block is required.
+* **Works with existing reference-counted objects** — Particularly useful for COM-style and other intrusive reference-counted APIs.
+* **Header-only** — No library to build or link against.
+
+The trade-off is that the managed type must explicitly participate in the reference-counting mechanism.
+
 ## Unit Tests
 
 The project includes a comprehensive unit test suite built with [GoogleTest](https://github.com/google/googletest).
