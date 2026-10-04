@@ -4,6 +4,9 @@
 
 // declaration
 
+namespace crimson_cell
+{
+
 template<class T>
 class intrusive_ptr
 {
@@ -156,4 +159,6 @@ template<class T, class U>
 intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p)
 {
     return reinterpret_cast<T*>(p.get());
+}
+
 }
