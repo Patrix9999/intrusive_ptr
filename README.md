@@ -44,6 +44,29 @@ You may want to use `std::shared_ptr` instead when:
 
 In short, `intrusive_ptr` is best suited for objects that already own their reference-counting mechanism. If you simply need shared ownership of an otherwise ordinary type, `std::shared_ptr` is generally the simpler choice.
 
+## Example
+
+Define `intrusive_ptr_add_ref` and `intrusive_ptr_release` to connect it to the object's `AddRef()` and `Release()` methods.
+
+```cpp
+#include <crimson_cell/intrusive_ptr.hpp>
+#include "RefCountedObject.hpp"
+
+void intrusive_ptr_add_ref(RefCountedObject* object) noexcept {
+    object->AddRef();
+}
+
+void intrusive_ptr_release(RefCountedObject* object) noexcept {
+    object->Release();
+}
+
+int main() {
+    auto ptr = crimson_cell::intrusive_ptr<RefCountedObject>{new RefCountedObject};
+
+    return 0;
+}
+```
+
 ## Unit Tests
 
 The project includes a comprehensive unit test suite built with [GoogleTest](https://github.com/google/googletest).
