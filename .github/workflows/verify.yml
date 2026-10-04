@@ -59,6 +59,7 @@ jobs:
 
     env:
       preset: msvc-clang-x64-release
+      arch: x64
 
     steps:
       - name: Checkout
@@ -67,7 +68,7 @@ jobs:
       - name: Set up MSVC
         uses: ./.github/actions/msvc-dev-cmd
         with:
-          arch: x64
+          arch: ${{ env.arch }}
 
       - name: Configure
         run: cmake --preset ${{ env.preset }}
