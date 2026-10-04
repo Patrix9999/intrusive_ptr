@@ -24,12 +24,12 @@ class intrusive_ptr {
 
   void reset(T* p = nullptr);
 
-  T& operator*() const noexcept;
-  T* operator->() const noexcept;
-  T* get() const noexcept;
-  T* detach() noexcept;
+  [[nodiscard]] T& operator*() const noexcept;
+  [[nodiscard]] T* operator->() const noexcept;
+  [[nodiscard]] T* get() const noexcept;
+  [[nodiscard]] T* detach() noexcept;
 
-  explicit operator bool() const noexcept;
+  [[nodiscard]] explicit operator bool() const noexcept;
 
   void swap(intrusive_ptr& other) noexcept;
 
@@ -74,8 +74,7 @@ intrusive_ptr<T>& intrusive_ptr<T>::operator=(intrusive_ptr&& other) noexcept {
 
 template <class T>
 void intrusive_ptr<T>::reset(T* p) {
-  intrusive_ptr temp(p);
-  swap(temp);
+  intrusive_ptr(p).swap(*this);
 }
 
 template <class T>
