@@ -21,5 +21,6 @@ target_include_directories(intrusive_ptr
 )
 
 if (INTRUSIVE_PTR_ENABLE_TEST)
+	enable_testing()
 	add_subdirectory(test)
 endif()

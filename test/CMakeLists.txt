@@ -1,3 +1,4 @@
+include(GoogleTest)
 include(FetchContent)
 
 FetchContent_Declare(googletest
@@ -12,28 +13,27 @@ endif()
 
 FetchContent_MakeAvailable(googletest)
 
-add_executable(test)
+add_executable(intrusive_ptr_test)
 
 file(GLOB_RECURSE SRC CONFIGURE_DEPENDS
     "*.hpp"
     "*.cpp"
 )
 
-target_sources(test
+target_sources(intrusive_ptr_test
     PRIVATE
         ${SRC}
 )
 
-target_include_directories(test
+target_include_directories(intrusive_ptr_test
     PRIVATE
         "./"
 )
 
-target_link_libraries(test
+target_link_libraries(intrusive_ptr_test
     PRIVATE
         intrusive_ptr
         GTest::gtest_main
 )
 
-include(GoogleTest)
-gtest_discover_tests(test)
+gtest_discover_tests(intrusive_ptr_test)

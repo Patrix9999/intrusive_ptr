@@ -136,5 +136,19 @@
 		{ "name": "gcc-x64-release", "configurePreset": "gcc-x64-release" },
 		{ "name": "wsl-gcc-x64-debug", "configurePreset": "wsl-gcc-x64-debug" },
 		{ "name": "wsl-gcc-x64-release", "configurePreset": "wsl-gcc-x64-release" }
+	],
+	"testPresets": [
+		{ "name": "msvc-x86-debug", "configurePreset": "msvc-x86-debug" },
+		{ "name": "msvc-x86-release", "configurePreset": "msvc-x86-release" },
+		{ "name": "msvc-x64-debug", "configurePreset": "msvc-x64-debug" },
+		{ "name": "msvc-x64-release", "configurePreset": "msvc-x64-release" },
+		{ "name": "msvc-clang-x86-debug", "configurePreset": "msvc-clang-x86-debug" },
+		{ "name": "msvc-clang-x86-release", "configurePreset": "msvc-clang-x86-release" },
+		{ "name": "msvc-clang-x64-debug", "configurePreset": "msvc-clang-x64-debug" },
+		{ "name": "msvc-clang-x64-release", "configurePreset": "msvc-clang-x64-release" },
+		{ "name": "gcc-x64-debug", "configurePreset": "gcc-x64-debug" },
+		{ "name": "gcc-x64-release", "configurePreset": "gcc-x64-release" },
+		{ "name": "wsl-gcc-x64-debug", "configurePreset": "wsl-gcc-x64-debug" },
+		{ "name": "wsl-gcc-x64-release", "configurePreset": "wsl-gcc-x64-release" }
 	]
 }
