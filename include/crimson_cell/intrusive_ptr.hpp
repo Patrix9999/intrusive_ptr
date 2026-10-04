@@ -1,6 +1,7 @@
 #pragma once
 
 #include <compare>
+#include <type_traits>
 #include <utility>
 
 // declaration
@@ -18,10 +19,26 @@ class intrusive_ptr {
   intrusive_ptr(const intrusive_ptr& other);
   intrusive_ptr(intrusive_ptr&& other) noexcept;
 
+  template <class U>
+    requires std::is_convertible_v<U*, T*>
+  intrusive_ptr(const intrusive_ptr<U>& other);
+
+  template <class U>
+    requires std::is_convertible_v<U*, T*>
+  intrusive_ptr(intrusive_ptr<U>&& other) noexcept;
+
   ~intrusive_ptr();
 
   intrusive_ptr& operator=(const intrusive_ptr& other);
   intrusive_ptr& operator=(intrusive_ptr&& other) noexcept;
+
+  template <class U>
+    requires std::is_convertible_v<U*, T*>
+  intrusive_ptr& operator=(const intrusive_ptr<U>& other);
+
+  template <class U>
+    requires std::is_convertible_v<U*, T*>
+  intrusive_ptr& operator=(intrusive_ptr<U>&& other) noexcept;
 
   void reset();
   void reset(T* p, bool add_ref = true);
@@ -58,6 +75,20 @@ intrusive_ptr<T>::intrusive_ptr(intrusive_ptr&& other) noexcept
 }
 
 template <class T>
+template <class U>
+  requires std::is_convertible_v<U*, T*>
+intrusive_ptr<T>::intrusive_ptr(const intrusive_ptr<U>& other)
+    : ptr_(other.get()) {
+  if (ptr_) intrusive_ptr_add_ref(ptr_);
+}
+
+template <class T>
+template <class U>
+  requires std::is_convertible_v<U*, T*>
+intrusive_ptr<T>::intrusive_ptr(intrusive_ptr<U>&& other) noexcept
+    : ptr_(other.detach()) {}
+
+template <class T>
 intrusive_ptr<T>::~intrusive_ptr() {
   if (ptr_) intrusive_ptr_release(ptr_);
 }
@@ -73,6 +104,23 @@ intrusive_ptr<T>& intrusive_ptr<T>::operator=(intrusive_ptr&& other) noexcept {
   intrusive_ptr(std::move(other)).swap(*this);
   return *this;
 }
+template <class T>
+template <class U>
+  requires std::is_convertible_v<U*, T*>
+intrusive_ptr<T>& intrusive_ptr<T>::operator=(const intrusive_ptr<U>& other) {
+  intrusive_ptr(other).swap(*this);
+  return *this;
+}
+
+template <class T>
+template <class U>
+  requires std::is_convertible_v<U*, T*>
+intrusive_ptr<T>& intrusive_ptr<T>::operator=(
+    intrusive_ptr<U>&& other) noexcept {
+  intrusive_ptr(std::move(other)).swap(*this);
+  return *this;
+}
+
 template <class T>
 void intrusive_ptr<T>::reset() {
   intrusive_ptr().swap(*this);
