@@ -2,6 +2,7 @@ name: Verify
 
 on:
   push:
+    tags-ignore: ['*']
     paths:
       - '**/*.cpp'
       - '**/*.hpp'
@@ -11,6 +12,7 @@ on:
       - 'CMakePresets.json'
       - '.github/workflows/verify.yml'
   pull_request:
+    tags-ignore: ['*']
     paths:
       - '**/*.cpp'
       - '**/*.hpp'
