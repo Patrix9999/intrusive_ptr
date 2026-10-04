@@ -15,18 +15,12 @@ jobs:
 
       - name: Install clang-format
         run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-format
+          python3 -m pip install "clang-format==20.1.8"
 
       - name: Check code formatting
         run: |
-          clang-format --version
-          find . \
-            -type f \
-            \( -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.cxx' \) \
-            -not -path './build/*' \
-            -print0 |
-          xargs -0 clang-format --dry-run --Werror
+          shopt -s globstar
+          clang-format --dry-run -Werror **/*.cpp **/*.h **/*.hpp
 
   test_linux:
     name: test-linux
