@@ -44,9 +44,6 @@
 				"value": "x86",
 				"strategy": "external"
 			},
-			"cacheVariables": {
-				"OUT_FILE_SUFFIX": "x86"
-			},
 			"vendor": {
 				"jetbrains.com/clion": {
 					"toolchain": "Visual Studio x86"
@@ -59,9 +56,6 @@
 			"architecture": {
 				"value": "x64",
 				"strategy": "external"
-			},
-			"cacheVariables": {
-				"OUT_FILE_SUFFIX": "x64"
 			},
 			"vendor": {
 				"jetbrains.com/clion": {
