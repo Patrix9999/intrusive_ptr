@@ -2,7 +2,23 @@ name: Verify
 
 on:
   push:
+    paths:
+      - '**/*.cpp'
+      - '**/*.hpp'
+      - '**/*.h'
+      - 'CMakeLists.txt'
+      - '**/CMakeLists.txt'
+      - 'CMakePresets.json'
+      - '.github/workflows/verify.yml'
   pull_request:
+    paths:
+      - '**/*.cpp'
+      - '**/*.hpp'
+      - '**/*.h'
+      - 'CMakeLists.txt'
+      - '**/CMakeLists.txt'
+      - 'CMakePresets.json'
+      - '.github/workflows/verify.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
