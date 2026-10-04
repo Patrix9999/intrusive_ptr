@@ -44,7 +44,13 @@ You may want to use `std::shared_ptr` instead when:
 
 In short, `intrusive_ptr` is best suited for objects that already own their reference-counting mechanism. If you simply need shared ownership of an otherwise ordinary type, `std::shared_ptr` is generally the simpler choice.
 
-## Example
+## Installation
+
+Download the header from the [Releases](https://github.com/Patrix9999/intrusive_ptr/releases) page and include `crimson_cell/intrusive_ptr.hpp`.
+
+Alternatively you can also add the repository as a `git submodule` and include it in your CMake project via [add_subdirectory](https://cmake.org/cmake/help/latest/command/add_subdirectory.html) function.
+
+## Usage Example
 
 Define `intrusive_ptr_add_ref` and `intrusive_ptr_release` to connect it to the object's `AddRef()` and `Release()` methods.
 
