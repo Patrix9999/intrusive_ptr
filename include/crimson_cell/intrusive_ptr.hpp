@@ -187,7 +187,6 @@ intrusive_ptr<T>::intrusive_ptr(T* p) : ptr_(p) {
 template <class T>
 intrusive_ptr<T>::intrusive_ptr(T* p, const adopt_ref_t tag) : ptr_(p) {
   std::ignore = tag;
-  if (ptr_) intrusive_ptr_add_ref(ptr_);
 }
 
 template <class T>
