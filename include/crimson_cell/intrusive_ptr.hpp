@@ -286,7 +286,7 @@ constexpr bool operator==(const intrusive_ptr<T>& lhs,
 template <class T, class U>
 constexpr std::strong_ordering operator<=>(
     const intrusive_ptr<T>& lhs, const intrusive_ptr<U>& rhs) noexcept {
-  return lhs.get() <=> rhs.get();
+  return std::compare_three_way{}(lhs.get(), rhs.get());
 }
 
 /// @brief Performs a static cast between intrusive pointer types.
