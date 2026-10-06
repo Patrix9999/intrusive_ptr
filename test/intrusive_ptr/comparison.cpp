@@ -44,8 +44,8 @@ TEST(intrusive_ptr, three_way_comparison_pointers) {
   EXPECT_EQ(first <=> second, std::strong_ordering::equal);
 }
 
-TEST(intrusive_ptr, three_way_comparison_pointer_nullptr) {
-  const crimson_cell::intrusive_ptr first{new RefCountedObject};
+TEST(intrusive_ptr, three_way_comparison_nullptr) {
+  const crimson_cell::intrusive_ptr<RefCountedObject> first;
 
   EXPECT_EQ(first <=> nullptr, std::strong_ordering::equal);
 }
