@@ -19,18 +19,6 @@ TEST(intrusive_ptr, reset_method_acquires_reference) {
   EXPECT_EQ(ptr->RefCount(), 1);
 }
 
-TEST(intrusive_ptr, reset_method_adopts_reference) {
-  auto* object = new RefCountedObject{};
-  object->AddRef();
-
-  crimson_cell::intrusive_ptr<RefCountedObject> ptr;
-  ptr.reset(object, false);
-
-  ASSERT_TRUE(ptr);
-  EXPECT_EQ(ptr.get(), object);
-  EXPECT_EQ(ptr->RefCount(), 1);
-}
-
 TEST(intrusive_ptr, swap_method) {
   auto* first_object = new RefCountedObject{};
   auto* second_object = new RefCountedObject{};

@@ -22,7 +22,7 @@ TEST(intrusive_ptr, no_add_ref_constructor) {
   auto* raw = new RefCountedObject;
   raw->AddRef();
 
-  crimson_cell::intrusive_ptr ptr{raw, false};
+  crimson_cell::intrusive_ptr ptr{raw, crimson_cell::adopt_ref};
 
   ASSERT_TRUE(ptr);
   EXPECT_EQ(ptr->RefCount(), 1);

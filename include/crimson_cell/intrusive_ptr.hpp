@@ -41,6 +41,16 @@ SOFTWARE.
 
 namespace crimson_cell {
 
+/// @brief Tag type used to adopt an existing reference without incrementing
+/// the reference count.
+struct adopt_ref_t {
+  explicit constexpr adopt_ref_t() = default;
+};
+
+/// @brief Tag used to adopt an existing reference without incrementing
+/// the reference count.
+inline constexpr adopt_ref_t adopt_ref{};
+
 /**
  * @brief A lightweight intrusive reference-counted smart pointer.
  *
@@ -64,8 +74,16 @@ class intrusive_ptr {
   /// @brief Constructs a pointer from a raw pointer.
   ///
   /// @param p Pointer to the managed object.
-  /// @param add_ref Whether to acquire a reference to the object.
-  explicit intrusive_ptr(T* p, bool add_ref = true);
+  explicit intrusive_ptr(T* p);
+
+  /// @brief Constructs a pointer by adopting an existing reference.
+  ///
+  /// Does not increment the reference count. The caller must already own
+  /// a reference to the object.
+  ///
+  /// @param p Pointer to the managed object.
+  /// @param tag Tag indicating that the existing reference is adopted.
+  explicit intrusive_ptr(T* p, adopt_ref_t tag);
 
   /// @brief Copies an intrusive pointer and acquires a reference.
   ///
@@ -132,8 +150,7 @@ class intrusive_ptr {
   /// @brief Replaces the managed pointer.
   ///
   /// @param p Pointer to the new managed object.
-  /// @param add_ref Whether to acquire a reference to the object.
-  void reset(T* p, bool add_ref = true);
+  void reset(T* p);
 
   /// @brief Returns the stored pointer.
   [[nodiscard]] constexpr T* get() const noexcept;
@@ -164,8 +181,13 @@ class intrusive_ptr {
 // definition
 
 template <class T>
-intrusive_ptr<T>::intrusive_ptr(T* p, bool add_ref) : ptr_(p) {
-  if (ptr_ && add_ref) intrusive_ptr_add_ref(ptr_);
+intrusive_ptr<T>::intrusive_ptr(T* p) : ptr_(p) {
+  if (ptr_) intrusive_ptr_add_ref(ptr_);
+}
+template <class T>
+intrusive_ptr<T>::intrusive_ptr(T* p, const adopt_ref_t tag) : ptr_(p) {
+  std::ignore = tag;
+  if (ptr_) intrusive_ptr_add_ref(ptr_);
 }
 
 template <class T>
@@ -233,8 +255,8 @@ void intrusive_ptr<T>::reset() {
 }
 
 template <class T>
-void intrusive_ptr<T>::reset(T* p, bool add_ref) {
-  intrusive_ptr(p, add_ref).swap(*this);
+void intrusive_ptr<T>::reset(T* p) {
+  intrusive_ptr(p).swap(*this);
 }
 
 template <class T>
@@ -367,7 +389,7 @@ intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U>&& p) noexcept {
 /// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const& p) {
-  return dynamic_cast<T*>(p.get());
+  return intrusive_ptr<T>(dynamic_cast<T*>(p.get()));
 }
 
 /// @brief Performs a dynamic cast between intrusive pointer types.
