@@ -94,20 +94,50 @@ Define `intrusive_ptr_add_ref` and `intrusive_ptr_release` to connect it to the 
 
 ```cpp
 #include <crimson_cell/intrusive_ptr.hpp>
-#include "RefCountedObject.hpp"
+#include <iostream>
 
-void intrusive_ptr_add_ref(RefCountedObject* object) noexcept {
-    object->AddRef();
+class MyObject {
+ public:
+  void Hello() const {
+    std::cout << "Hello from MyObject!\n";
+  }
+
+  void AddRef() noexcept {
+    ++ref_count_;
+  }
+
+  void Release() noexcept {
+    if (--ref_count_ == 0) {
+      delete this;
+    }
+  }
+
+ private:
+  int ref_count_ = 0;
+};
+
+void intrusive_ptr_add_ref(MyObject* object) noexcept {
+  object->AddRef();
 }
 
-void intrusive_ptr_release(RefCountedObject* object) noexcept {
-    object->Release();
+void intrusive_ptr_release(MyObject* object) noexcept {
+  object->Release();
 }
 
 int main() {
-    auto ptr = crimson_cell::intrusive_ptr<RefCountedObject>{new RefCountedObject};
+  crimson_cell::intrusive_ptr<MyObject> first{new MyObject};
 
-    return 0;
+  first->Hello();
+
+  {
+    auto second = first;
+
+    // Both pointers now share the same object.
+    second->Hello();
+  }
+
+  // `second` was destroyed (refctr was decremented), but `first` still owns the object.
+  return 0;
 }
 ```
 
