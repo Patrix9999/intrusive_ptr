@@ -300,6 +300,20 @@ intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
   return static_cast<T*>(p.get());
 }
 
+/// @brief Performs a static cast between intrusive pointer types.
+///
+/// Transfers ownership from the source pointer without modifying the
+/// reference count.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast. The pointer is emptied after the cast.
+/// @return Converted intrusive pointer owning the same object.
+template <class T, class U>
+intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U>&& p) noexcept {
+  return intrusive_ptr<T>(static_cast<T*>(p.detach()), false);
+}
+
 /// @brief Performs a const cast between intrusive pointer types.
 ///
 /// @tparam T Target type.
@@ -309,6 +323,20 @@ intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
 template <class T, class U>
 intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const& p) {
   return const_cast<T*>(p.get());
+}
+
+/// @brief Performs a const cast between intrusive pointer types.
+///
+/// Transfers ownership from the source pointer without modifying the
+/// reference count.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast. The pointer is empty after the cast.
+/// @return Converted intrusive pointer owning the same object.
+template <class T, class U>
+intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U>&& p) noexcept {
+  return intrusive_ptr<T>(const_cast<T*>(p.detach()), false);
 }
 
 /// @brief Performs a dynamic cast between intrusive pointer types.
@@ -322,6 +350,26 @@ intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const& p) {
   return dynamic_cast<T*>(p.get());
 }
 
+/// @brief Performs a dynamic cast between intrusive pointer types.
+///
+/// Transfers ownership from the source pointer without modifying the
+/// reference count if the cast succeeds.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast. The pointer is empty after a successful cast.
+/// @return Converted intrusive pointer owning the same object, or an empty
+///         pointer if the cast fails.
+template <class T, class U>
+intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U>&& p) noexcept {
+  if (auto* ptr = dynamic_cast<T*>(p.get())) {
+    p.detach();
+    return intrusive_ptr<T>(ptr, false);
+  }
+
+  return {};
+}
+
 /// @brief Performs a reinterpret cast between intrusive pointer types.
 ///
 /// @tparam T Target type.
@@ -331,6 +379,20 @@ intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const& p) {
 template <class T, class U>
 intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
   return reinterpret_cast<T*>(p.get());
+}
+
+/// @brief Performs a reinterpret cast between intrusive pointer types.
+///
+/// Transfers ownership from the source pointer without modifying the
+/// reference count.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast. The pointer is empty after the cast.
+/// @return Converted intrusive pointer owning the same object.
+template <class T, class U>
+intrusive_ptr<T> reinterpret_pointer_cast(intrusive_ptr<U>&& p) noexcept {
+  return intrusive_ptr<T>(reinterpret_cast<T*>(p.detach()), false);
 }
 
 }  // namespace crimson_cell
