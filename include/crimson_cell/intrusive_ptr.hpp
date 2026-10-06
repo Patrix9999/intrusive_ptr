@@ -136,7 +136,7 @@ class intrusive_ptr {
   void reset(T* p, bool add_ref = true);
 
   /// @brief Returns the stored pointer.
-  [[nodiscard]] T* get() const noexcept;
+  [[nodiscard]] constexpr T* get() const noexcept;
 
   /// @brief Releases ownership without decrementing the reference count.
   ///
@@ -144,10 +144,10 @@ class intrusive_ptr {
   [[nodiscard]] T* detach() noexcept;
 
   /// @brief Dereferences the managed object.
-  [[nodiscard]] T& operator*() const noexcept;
+  [[nodiscard]] constexpr T& operator*() const noexcept;
 
   /// @brief Accesses the managed object.
-  [[nodiscard]] T* operator->() const noexcept;
+  [[nodiscard]] constexpr T* operator->() const noexcept;
 
   /// @brief Checks whether the pointer contains an object.
   [[nodiscard]] explicit operator bool() const noexcept;
@@ -238,7 +238,7 @@ void intrusive_ptr<T>::reset(T* p, bool add_ref) {
 }
 
 template <class T>
-T* intrusive_ptr<T>::get() const noexcept {
+constexpr T* intrusive_ptr<T>::get() const noexcept {
   return ptr_;
 }
 
@@ -250,12 +250,12 @@ T* intrusive_ptr<T>::detach() noexcept {
 }
 
 template <class T>
-T& intrusive_ptr<T>::operator*() const noexcept {
+constexpr T& intrusive_ptr<T>::operator*() const noexcept {
   return *ptr_;
 }
 
 template <class T>
-T* intrusive_ptr<T>::operator->() const noexcept {
+constexpr T* intrusive_ptr<T>::operator->() const noexcept {
   return ptr_;
 }
 
