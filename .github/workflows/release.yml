@@ -1,4 +1,4 @@
-name: "Release"
+name: Release
 
 on:
   push:
@@ -13,10 +13,11 @@ on:
         type: string
 
   release:
-      types: [published]
+    types: [published]
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   release:
@@ -33,6 +34,12 @@ jobs:
           else
             echo "version=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Build docs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run docs.yml --ref main
 
       - name: Create release
         uses: softprops/action-gh-release@v3
