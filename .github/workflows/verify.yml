@@ -2,6 +2,8 @@ name: Verify
 
 on:
   push:
+    branches:
+      - '**'
     paths:
       - '**/*.cpp'
       - '**/*.hpp'
