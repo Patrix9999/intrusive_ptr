@@ -1,3 +1,4 @@
+// clang-format off
 /*
 
 ____ ____ _ _  _ ____ ____ _  _     ____ ____ _    _      intrusive_ptr for C++ 20
@@ -26,6 +27,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+// clang-format on
 
 #pragma once
 
@@ -39,16 +41,16 @@ SOFTWARE.
 namespace crimson_cell {
 
 /**
-* @brief A lightweight intrusive reference-counted smart pointer.
-*
-* @tparam T The managed object type.
-*
-* The managed type is responsible for maintaining its own reference count.
-*
-* The following functions must be available through ADL:
-* - intrusive_ptr_add_ref(T*)
-* - intrusive_ptr_release(T*)
-*/
+ * @brief A lightweight intrusive reference-counted smart pointer.
+ *
+ * @tparam T The managed object type.
+ *
+ * The managed type is responsible for maintaining its own reference count.
+ *
+ * The following functions must be available through ADL:
+ * - intrusive_ptr_add_ref(T*)
+ * - intrusive_ptr_release(T*)
+ */
 template <class T>
 class intrusive_ptr {
  public:
@@ -274,8 +276,7 @@ void intrusive_ptr<T>::swap(intrusive_ptr& other) noexcept {
 /// @param lhs First intrusive pointer.
 /// @param rhs Second intrusive pointer.
 template <class T>
-constexpr void swap(intrusive_ptr<T>& lhs,
-                    intrusive_ptr<T>& rhs) noexcept {
+constexpr void swap(intrusive_ptr<T>& lhs, intrusive_ptr<T>& rhs) noexcept {
   lhs.swap(rhs);
 }
 
