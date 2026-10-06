@@ -38,48 +38,120 @@ SOFTWARE.
 
 namespace crimson_cell {
 
+/**
+* @brief A lightweight intrusive reference-counted smart pointer.
+*
+* @tparam T The managed object type.
+*
+* The managed type is responsible for maintaining its own reference count.
+*
+* The following functions must be available through ADL:
+* - intrusive_ptr_add_ref(T*)
+* - intrusive_ptr_release(T*)
+*/
 template <class T>
 class intrusive_ptr {
  public:
+  /// @brief The managed object type.
   using element_type = T;
 
+  /// @brief Constructs an empty intrusive pointer.
   constexpr intrusive_ptr() noexcept = default;
+
+  /// @brief Constructs a pointer from a raw pointer.
+  ///
+  /// @param p Pointer to the managed object.
+  /// @param add_ref Whether to acquire a reference to the object.
   intrusive_ptr(T* p, bool add_ref = true);
 
+  /// @brief Copies an intrusive pointer and acquires a reference.
+  ///
+  /// @param other Pointer to copy.
   intrusive_ptr(const intrusive_ptr& other);
+
+  /// @brief Moves an intrusive pointer.
+  ///
+  /// @param other Pointer to move from.
   intrusive_ptr(intrusive_ptr&& other) noexcept;
 
+  /// @brief Converts an intrusive pointer to a compatible type.
+  ///
+  /// @tparam U Source object type.
+  /// @param other Pointer to convert.
   template <class U>
     requires std::is_convertible_v<U*, T*>
   intrusive_ptr(const intrusive_ptr<U>& other);
 
+  /// @brief Moves an intrusive pointer to a compatible type.
+  ///
+  /// @tparam U Source object type.
+  /// @param other Pointer to move from.
   template <class U>
     requires std::is_convertible_v<U*, T*>
   intrusive_ptr(intrusive_ptr<U>&& other) noexcept;
 
+  /// @brief Releases the owned reference.
   ~intrusive_ptr();
 
+  /// @brief Copies another pointer.
+  ///
+  /// @param other Pointer to copy.
+  /// @return Reference to this pointer.
   intrusive_ptr& operator=(const intrusive_ptr& other);
+
+  /// @brief Moves another pointer.
+  ///
+  /// @param other Pointer to move from.
+  /// @return Reference to this pointer.
   intrusive_ptr& operator=(intrusive_ptr&& other) noexcept;
 
+  /// @brief Copies a compatible pointer type.
+  ///
+  /// @tparam U Source object type.
+  /// @param other Pointer to copy.
+  /// @return Reference to this pointer.
   template <class U>
     requires std::is_convertible_v<U*, T*>
   intrusive_ptr& operator=(const intrusive_ptr<U>& other);
 
+  /// @brief Moves a compatible pointer type.
+  ///
+  /// @tparam U Source object type.
+  /// @param other Pointer to move from.
+  /// @return Reference to this pointer.
   template <class U>
     requires std::is_convertible_v<U*, T*>
   intrusive_ptr& operator=(intrusive_ptr<U>&& other) noexcept;
 
+  /// @brief Releases the current reference and becomes empty.
   void reset();
+
+  /// @brief Replaces the managed pointer.
+  ///
+  /// @param p Pointer to the new managed object.
+  /// @param add_ref Whether to acquire a reference to the object.
   void reset(T* p, bool add_ref = true);
 
-  [[nodiscard]] T& operator*() const noexcept;
-  [[nodiscard]] T* operator->() const noexcept;
+  /// @brief Returns the stored pointer.
   [[nodiscard]] T* get() const noexcept;
+
+  /// @brief Releases ownership without decrementing the reference count.
+  ///
+  /// @return The previously stored pointer.
   [[nodiscard]] T* detach() noexcept;
 
+  /// @brief Dereferences the managed object.
+  [[nodiscard]] T& operator*() const noexcept;
+
+  /// @brief Accesses the managed object.
+  [[nodiscard]] T* operator->() const noexcept;
+
+  /// @brief Checks whether the pointer contains an object.
   [[nodiscard]] explicit operator bool() const noexcept;
 
+  /// @brief Swaps two intrusive pointers.
+  ///
+  /// @param other Pointer to swap with.
   void swap(intrusive_ptr& other) noexcept;
 
  private:
@@ -134,6 +206,7 @@ intrusive_ptr<T>& intrusive_ptr<T>::operator=(intrusive_ptr&& other) noexcept {
   intrusive_ptr(std::move(other)).swap(*this);
   return *this;
 }
+
 template <class T>
 template <class U>
   requires std::is_convertible_v<U*, T*>
@@ -195,39 +268,66 @@ void intrusive_ptr<T>::swap(intrusive_ptr& other) noexcept {
 
 // global utilities
 
+/// @brief Compares an intrusive pointer with `nullptr`.
 template <class T>
 constexpr bool operator==(const intrusive_ptr<T>& lhs,
                           const std::nullptr_t rhs) noexcept {
   return lhs.get() == rhs;
 }
 
+/// @brief Compares two intrusive pointers.
 template <class T, class U>
 constexpr bool operator==(const intrusive_ptr<T>& lhs,
                           const intrusive_ptr<U>& rhs) noexcept {
   return lhs.get() == rhs.get();
 }
 
+/// @brief Performs a three-way comparison of two intrusive pointers.
 template <class T, class U>
 constexpr std::strong_ordering operator<=>(
     const intrusive_ptr<T>& lhs, const intrusive_ptr<U>& rhs) noexcept {
   return lhs.get() <=> rhs.get();
 }
 
+/// @brief Performs a static cast between intrusive pointer types.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast.
+/// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
   return static_cast<T*>(p.get());
 }
 
+/// @brief Performs a const cast between intrusive pointer types.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast.
+/// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const& p) {
   return const_cast<T*>(p.get());
 }
 
+/// @brief Performs a dynamic cast between intrusive pointer types.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast.
+/// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const& p) {
   return dynamic_cast<T*>(p.get());
 }
 
+/// @brief Performs a reinterpret cast between intrusive pointer types.
+///
+/// @tparam T Target type.
+/// @tparam U Source type.
+/// @param p Pointer to cast.
+/// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
   return reinterpret_cast<T*>(p.get());
@@ -235,6 +335,7 @@ intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
 
 }  // namespace crimson_cell
 
+/// @brief Hash support for intrusive_ptr.
 template <typename T>
 struct std::hash<crimson_cell::intrusive_ptr<T>> {
   size_t operator()(const crimson_cell::intrusive_ptr<T>& ptr) const noexcept {

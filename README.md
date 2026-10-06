@@ -49,6 +49,44 @@ Download the header from the [Releases](https://github.com/Patrix9999/intrusive_
 
 Alternatively you can also add the repository as a `git submodule` and include it in your CMake project via [add_subdirectory](https://cmake.org/cmake/help/latest/command/add_subdirectory.html) function.
 
+## Documentation
+
+The full API reference and documentation are available on the **[project documentation site](https://patrix9999.github.io/intrusive_ptr/)**.
+
+### Building
+
+Install the required dependencies:
+
+### Doxygen
+
+**Windows**
+```bash
+winget install DimitriVanHeesch.Doxygen
+```
+
+**Ubuntu / Debian**
+```bash
+sudo apt install doxygen
+```
+
+### Sphinx
+
+```bash
+pip install -r docs/requirements.txt
+```
+
+After installing the dependencies, run the appropriate build script.
+
+**Windows**
+```bash
+docs/build.bat
+```
+
+**Ubuntu / Debian**
+```bash
+docs/build.sh
+```
+
 ## Usage Example
 
 Define `intrusive_ptr_add_ref` and `intrusive_ptr_release` to connect it to the object's `AddRef()` and `Release()` methods.
