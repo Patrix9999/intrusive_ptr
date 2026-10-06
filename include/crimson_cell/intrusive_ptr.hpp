@@ -65,7 +65,7 @@ class intrusive_ptr {
   ///
   /// @param p Pointer to the managed object.
   /// @param add_ref Whether to acquire a reference to the object.
-  intrusive_ptr(T* p, bool add_ref = true);
+  explicit intrusive_ptr(T* p, bool add_ref = true);
 
   /// @brief Copies an intrusive pointer and acquires a reference.
   ///
