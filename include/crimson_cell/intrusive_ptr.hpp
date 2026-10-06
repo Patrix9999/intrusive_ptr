@@ -268,6 +268,17 @@ void intrusive_ptr<T>::swap(intrusive_ptr& other) noexcept {
 
 // global utilities
 
+/// @brief Exchanges the managed objects of two intrusive pointers.
+///
+/// @tparam T The pointed-to type.
+/// @param lhs First intrusive pointer.
+/// @param rhs Second intrusive pointer.
+template <class T>
+constexpr void swap(intrusive_ptr<T>& lhs,
+                    intrusive_ptr<T>& rhs) noexcept {
+  lhs.swap(rhs);
+}
+
 /// @brief Compares an intrusive pointer with `nullptr`.
 template <class T>
 constexpr bool operator==(const intrusive_ptr<T>& lhs,
