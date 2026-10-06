@@ -29,7 +29,7 @@ TEST(intrusive_ptr, detach_method) {
   auto* object = new RefCountedObject{};
   crimson_cell::intrusive_ptr ptr{object};
 
-  auto* detached = ptr.detach();
+  auto* detached = ptr.release();
 
   EXPECT_EQ(object, detached);
   EXPECT_FALSE(ptr);

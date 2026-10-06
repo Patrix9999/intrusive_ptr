@@ -141,7 +141,7 @@ class intrusive_ptr {
   /// @brief Releases ownership without decrementing the reference count.
   ///
   /// @return The previously stored pointer.
-  [[nodiscard]] T* detach() noexcept;
+  [[nodiscard]] T* release() noexcept;
 
   /// @brief Dereferences the managed object.
   [[nodiscard]] constexpr T& operator*() const noexcept;
@@ -191,7 +191,7 @@ template <class T>
 template <class U>
   requires std::is_convertible_v<U*, T*>
 intrusive_ptr<T>::intrusive_ptr(intrusive_ptr<U>&& other) noexcept
-    : ptr_(other.detach()) {}
+    : ptr_(other.release()) {}
 
 template <class T>
 intrusive_ptr<T>::~intrusive_ptr() {
@@ -243,7 +243,7 @@ constexpr T* intrusive_ptr<T>::get() const noexcept {
 }
 
 template <class T>
-T* intrusive_ptr<T>::detach() noexcept {
+T* intrusive_ptr<T>::release() noexcept {
   T* result = ptr_;
   ptr_ = nullptr;
   return result;
@@ -331,7 +331,7 @@ intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
 /// @return Converted intrusive pointer owning the same object.
 template <class T, class U>
 intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U>&& p) noexcept {
-  return intrusive_ptr<T>(static_cast<T*>(p.detach()), false);
+  return intrusive_ptr<T>(static_cast<T*>(p.release()), false);
 }
 
 /// @brief Performs a const cast between intrusive pointer types.
@@ -356,7 +356,7 @@ intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const& p) {
 /// @return Converted intrusive pointer owning the same object.
 template <class T, class U>
 intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U>&& p) noexcept {
-  return intrusive_ptr<T>(const_cast<T*>(p.detach()), false);
+  return intrusive_ptr<T>(const_cast<T*>(p.release()), false);
 }
 
 /// @brief Performs a dynamic cast between intrusive pointer types.
@@ -383,7 +383,7 @@ intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const& p) {
 template <class T, class U>
 intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U>&& p) noexcept {
   if (auto* ptr = dynamic_cast<T*>(p.get())) {
-    p.detach();
+    p.release();
     return intrusive_ptr<T>(ptr, false);
   }
 
@@ -412,7 +412,7 @@ intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
 /// @return Converted intrusive pointer owning the same object.
 template <class T, class U>
 intrusive_ptr<T> reinterpret_pointer_cast(intrusive_ptr<U>&& p) noexcept {
-  return intrusive_ptr<T>(reinterpret_cast<T*>(p.detach()), false);
+  return intrusive_ptr<T>(reinterpret_cast<T*>(p.release()), false);
 }
 
 }  // namespace crimson_cell
