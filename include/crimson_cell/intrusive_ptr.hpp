@@ -32,6 +32,7 @@ SOFTWARE.
 #pragma once
 
 #include <compare>
+#include <cstddef>
 #include <functional>
 #include <type_traits>
 #include <utility>
