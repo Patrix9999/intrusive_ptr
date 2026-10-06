@@ -301,6 +301,13 @@ constexpr std::strong_ordering operator<=>(
   return std::compare_three_way{}(lhs.get(), rhs.get());
 }
 
+/// @brief Performs a three-way comparison of an intrusive pointer and null.
+template <class T>
+constexpr std::strong_ordering operator<=>(const intrusive_ptr<T>& lhs,
+                                           std::nullptr_t) noexcept {
+  return std::compare_three_way{}(lhs.get(), static_cast<T*>(nullptr));
+}
+
 /// @brief Performs a static cast between intrusive pointer types.
 ///
 /// @tparam T Target type.

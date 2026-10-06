@@ -36,10 +36,16 @@ TEST(intrusive_ptr, inequality_comparison) {
   EXPECT_TRUE(first != third);
 }
 
-TEST(intrusive_ptr, spaceship_comparison) {
+TEST(intrusive_ptr, three_way_comparison_pointers) {
   const crimson_cell::intrusive_ptr first{new RefCountedObject};
   // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
   const crimson_cell::intrusive_ptr second{first};
 
   EXPECT_EQ(first <=> second, std::strong_ordering::equal);
+}
+
+TEST(intrusive_ptr, three_way_comparison_pointer_nullptr) {
+  const crimson_cell::intrusive_ptr first{new RefCountedObject};
+
+  EXPECT_EQ(first <=> nullptr, std::strong_ordering::equal);
 }
