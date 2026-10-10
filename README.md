@@ -90,56 +90,86 @@ docs/build.sh
 
 ## Usage Example
 
-Define `intrusive_ptr_add_ref` and `intrusive_ptr_release` to connect it to the object's `AddRef()` and `Release()` methods.
+To use `intrusive_ptr`, define `intrusive_ptr_add_ref` and `intrusive_ptr_release` to connect it to your object's `AddRef()` and `Release()` methods.
 
 ```cpp
 #include <crimson_cell/intrusive_ptr.hpp>
 #include <iostream>
 
 class MyObject {
- public:
-  void Hello() const {
-    std::cout << "Hello from MyObject!\n";
-  }
-
-  void AddRef() noexcept {
-    ++ref_count_;
-  }
-
-  void Release() noexcept {
-    if (--ref_count_ == 0) {
-      delete this;
+public:
+    void Hello() const {
+        std::cout << "Hello from MyObject!\n";
     }
-  }
 
- private:
-  int ref_count_ = 0;
+    void AddRef() noexcept {
+        ++ref_count_;
+    }
+
+    void Release() noexcept {
+        if (--ref_count_ == 0) {
+            delete this;
+        }
+    }
+
+private:
+    int ref_count_ = 0;
 };
 
 void intrusive_ptr_add_ref(MyObject* object) noexcept {
-  object->AddRef();
+    object->AddRef();
 }
 
 void intrusive_ptr_release(MyObject* object) noexcept {
-  object->Release();
+    object->Release();
 }
 
 int main() {
-  crimson_cell::intrusive_ptr<MyObject> first{new MyObject};
+    // The regular constructor calls AddRef().
+    crimson_cell::intrusive_ptr<MyObject> first{new MyObject};
 
-  first->Hello();
+    first->Hello();
 
-  {
-    auto second = first;
+    {
+        // Copying the pointer acquires another reference.
+        auto second = first;
 
-    // Both pointers now share the same object.
-    second->Hello();
-  }
+        // Both pointers share the same object.
+        second->Hello();
+    }
 
-  // `second` was destroyed (refctr was decremented), but `first` still owns the object.
-  return 0;
+    // 'second' was destroyed, so its reference was released.
+    // 'first' still owns a reference to the object.
+
+    // Simulate an external API returning an object with an
+    // already-acquired reference.
+    MyObject* raw = new MyObject;
+    raw->AddRef();
+
+    {
+        // Adopt the existing reference without calling AddRef().
+        crimson_cell::intrusive_ptr<MyObject> adopted{raw, crimson_cell::adopt_ref};
+
+        adopted->Hello();
+
+        // When 'adopted' is destroyed, Release() is called.
+        // No additional reference was acquired during adoption.
+    }
+
+    // The adopted object has now been destroyed because its
+    // reference count reached zero.
+
+    return 0;
 }
 ```
+
+### Constructor behavior
+
+* `intrusive_ptr<T>{ptr}` calls `intrusive_ptr_add_ref(ptr)` to acquire a reference.
+* `intrusive_ptr<T>{ptr, crimson_cell::adopt_ref}` adopts an existing reference without incrementing the reference count. The adopted pointer still calls `intrusive_ptr_release(ptr)` when its ownership ends.
+
+**Important:** Only use `adopt_ref` when a reference has already been acquired for the pointer being adopted. Otherwise, the pointer may release a reference it does not own, potentially destroying the object prematurely.
+
 
 ## Unit Tests
 
