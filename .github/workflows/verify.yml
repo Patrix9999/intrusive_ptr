@@ -78,6 +78,7 @@ jobs:
             --object-directory out/build/${{ env.preset }} \
             --filter '^include/' \
             --filter '^src/' \
+            --exclude '^test/' \
             --cobertura-pretty \
             --output coverage.xml
 
