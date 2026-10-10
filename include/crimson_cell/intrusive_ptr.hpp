@@ -419,7 +419,7 @@ intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U>&& p) noexcept {
 /// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
-  return reinterpret_cast<T*>(p.get());
+  return intrusive_ptr<T>{reinterpret_cast<T*>(p.get())};
 }
 
 /// @brief Performs a reinterpret cast between intrusive pointer types.

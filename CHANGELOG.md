@@ -1,1 +1,1 @@
-- Initial release
+- Fixed `crimson_cell::reinterpret_pointer_cast` causing a compilation error due to `explicit constructor`.
