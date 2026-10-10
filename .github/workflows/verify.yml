@@ -76,6 +76,8 @@ jobs:
           gcovr \
             --root . \
             --object-directory out/build/${{ env.preset }} \
+            --filter '^include/' \
+            --filter '^src/' \
             --cobertura-pretty \
             --output coverage.xml
 
