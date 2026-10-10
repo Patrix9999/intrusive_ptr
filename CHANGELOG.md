@@ -1,1 +1,2 @@
 - Fixed `crimson_cell::reinterpret_pointer_cast` causing a compilation error due to `explicit constructor`.
+- Added CMake option `ENABLE_TEST_COVERAGE` for generating tests coverage raports.
