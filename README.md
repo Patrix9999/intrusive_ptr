@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/github/license/Patrix9999/intrusive_ptr)](https://github.com/Patrix9999/intrusive_ptr/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/v/release/Patrix9999/intrusive_ptr)](https://github.com/Patrix9999/intrusive_ptr/releases)
 [![docs](https://img.shields.io/badge/docs-online-blue)](https://patrix9999.github.io/intrusive_ptr/)
+[![codecov](https://codecov.io/github/Patrix9999/intrusive_ptr/graph/badge.svg?token=QKQNLLQZH1)](https://codecov.io/github/Patrix9999/intrusive_ptr)
 
 ## About
 

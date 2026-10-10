@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(INTRUSIVE_PTR_ENABLE_TEST "This option enables unit test project. By default this option is set to ON" ON)
+option(ENABLE_TEST_COVERAGE "Enable code coverage instrumentation for tests" OFF)
 
 add_library(intrusive_ptr INTERFACE)
 add_library(crimson_cell::intrusive_ptr ALIAS intrusive_ptr)

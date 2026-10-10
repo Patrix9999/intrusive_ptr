@@ -1,6 +1,17 @@
 include(GoogleTest)
 include(FetchContent)
 
+if(ENABLE_TEST_COVERAGE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        add_compile_options(--coverage)
+        add_link_options(--coverage)
+    else()
+        message(FATAL_ERROR
+                "ENABLE_TEST_COVERAGE is only supported with GCC."
+        )
+    endif()
+endif()
+
 block(PROPAGATE GTest::gtest_main)
     FetchContent_Declare(googletest
             GIT_REPOSITORY https://github.com/google/googletest.git
