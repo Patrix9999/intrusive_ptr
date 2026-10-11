@@ -192,7 +192,7 @@ The project uses [GitHub Actions](https://github.com/features/actions) to automa
 
 The [verify.yml](.github/workflows/verify.yml) workflow runs automatically on every push and pull request. It checks code formatting, builds the library on **Linux** and **Windows**, and runs the unit test suite on those platforms.
 
-Release workflows automate the process of publishing new versions, helping keep releases consistent and reproducible.
+The [release.yml](.github/workflows/release.yml) and [docs.yml](.github/workflows/docs.yml) workflows automate the process of publishing new versions, helping keep releases consistent and reproducible.
 
 ## License
 
