@@ -21,6 +21,7 @@ on:
       - '**/CMakeLists.txt'
       - 'CMakePresets.json'
       - '.github/workflows/verify.yml'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
