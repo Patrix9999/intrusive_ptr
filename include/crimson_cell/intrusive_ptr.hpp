@@ -339,7 +339,7 @@ constexpr std::strong_ordering operator<=>(const intrusive_ptr<T>& lhs,
 /// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
-  return static_cast<T*>(p.get());
+  return intrusive_ptr<T>(static_cast<T*>(p.get()));
 }
 
 /// @brief Performs a static cast between intrusive pointer types.
@@ -364,7 +364,7 @@ intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U>&& p) noexcept {
 /// @return Converted intrusive pointer.
 template <class T, class U>
 intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const& p) {
-  return const_cast<T*>(p.get());
+  return intrusive_ptr<T>(const_cast<T*>(p.get()));
 }
 
 /// @brief Performs a const cast between intrusive pointer types.
@@ -405,7 +405,7 @@ intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U> const& p) {
 template <class T, class U>
 intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U>&& p) noexcept {
   if (auto* ptr = dynamic_cast<T*>(p.get())) {
-    p.release();
+    std::ignore = p.release();
     return intrusive_ptr<T>(ptr, adopt_ref);
   }
 

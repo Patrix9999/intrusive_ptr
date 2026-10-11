@@ -51,6 +51,53 @@ TEST(intrusive_ptr, bool_conversion_from_derived) {
   }
 }
 
+TEST(intrusive_ptr, bool_conversion_from_derived_reset) {
+  RefCountedObjectExtension* raw = new RefCountedObjectExtension;
+
+  for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObjectExtension> ptr;
+    ptr.reset(raw);
+    if (ptr) {
+      raw = nullptr;
+    } else {
+      EXPECT_FALSE(ptr);
+    }
+  }
+}
+
+TEST(intrusive_ptr, bool_conversion_from_derived_copy_assignment) {
+  RefCountedObjectExtension* raw = new RefCountedObjectExtension;
+
+  for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObjectExtension> src;
+    src.reset(raw);
+    crimson_cell::intrusive_ptr<RefCountedObjectExtension> copy;
+    copy = src;
+    if (copy) {
+      raw = nullptr;
+    } else {
+      EXPECT_FALSE(copy);
+    }
+  }
+}
+
+TEST(intrusive_ptr, bool_conversion_from_copy_constructor) {
+  RefCountedObject* raw = new RefCountedObject;
+
+  for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObject> src;
+    src.reset(raw);
+    // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
+    crimson_cell::intrusive_ptr<RefCountedObject> copy{src};
+    src.reset(copy.get());
+    if (src) {
+      raw = nullptr;
+    } else {
+      EXPECT_FALSE(src);
+    }
+  }
+}
+
 TEST(intrusive_ptr, null_comparison) {
   crimson_cell::intrusive_ptr<RefCountedObject> ptr;
 
