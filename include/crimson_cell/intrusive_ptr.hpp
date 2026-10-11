@@ -353,7 +353,7 @@ intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U> const& p) {
 /// @return Converted intrusive pointer owning the same object.
 template <class T, class U>
 intrusive_ptr<T> static_pointer_cast(intrusive_ptr<U>&& p) noexcept {
-  return intrusive_ptr<T>(static_cast<T*>(p.release()), false);
+  return intrusive_ptr<T>(static_cast<T*>(p.release()), adopt_ref);
 }
 
 /// @brief Performs a const cast between intrusive pointer types.
@@ -378,7 +378,7 @@ intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U> const& p) {
 /// @return Converted intrusive pointer owning the same object.
 template <class T, class U>
 intrusive_ptr<T> const_pointer_cast(intrusive_ptr<U>&& p) noexcept {
-  return intrusive_ptr<T>(const_cast<T*>(p.release()), false);
+  return intrusive_ptr<T>(const_cast<T*>(p.release()), adopt_ref);
 }
 
 /// @brief Performs a dynamic cast between intrusive pointer types.
@@ -406,7 +406,7 @@ template <class T, class U>
 intrusive_ptr<T> dynamic_pointer_cast(intrusive_ptr<U>&& p) noexcept {
   if (auto* ptr = dynamic_cast<T*>(p.get())) {
     p.release();
-    return intrusive_ptr<T>(ptr, false);
+    return intrusive_ptr<T>(ptr, adopt_ref);
   }
 
   return {};
@@ -434,7 +434,7 @@ intrusive_ptr<T> reinterpret_pointer_cast(const intrusive_ptr<U>& p) {
 /// @return Converted intrusive pointer owning the same object.
 template <class T, class U>
 intrusive_ptr<T> reinterpret_pointer_cast(intrusive_ptr<U>&& p) noexcept {
-  return intrusive_ptr<T>(reinterpret_cast<T*>(p.release()), false);
+  return intrusive_ptr<T>(reinterpret_cast<T*>(p.release()), adopt_ref);
 }
 
 }  // namespace crimson_cell

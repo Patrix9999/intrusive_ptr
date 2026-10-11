@@ -1,2 +1,3 @@
 - Fixed `crimson_cell::reinterpret_pointer_cast` causing a compilation error due to `explicit constructor`.
+- Fixed `crimson_cell::static_pointer_cast`, `crimson_cell::const_pointer_cast`, `crimson_cell::dynamic_pointer_cast`, `crimson_cell::reinterpret_pointer_cast` **move variants** not using `crimson_cell::adopt_ref`.
 - Added CMake option `ENABLE_TEST_COVERAGE` for generating tests coverage raports.
