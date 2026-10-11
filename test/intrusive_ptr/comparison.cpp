@@ -6,10 +6,10 @@
 #include "fixtures/RefCountedObjectExtension.hpp"
 
 TEST(intrusive_ptr, bool_conversion_from_reset) {
-  crimson_cell::intrusive_ptr<RefCountedObject> ptr;
   RefCountedObject* raw = new RefCountedObject;
 
   for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObject> ptr;
     ptr.reset(raw);
     if (ptr) {
       raw = nullptr;
@@ -20,13 +20,15 @@ TEST(intrusive_ptr, bool_conversion_from_reset) {
 }
 
 TEST(intrusive_ptr, bool_conversion_from_copy) {
-  crimson_cell::intrusive_ptr<RefCountedObject> src{new RefCountedObject};
+  RefCountedObject* raw = new RefCountedObject;
 
   for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObject> src;
+    src.reset(raw);
     crimson_cell::intrusive_ptr<RefCountedObject> copy;
     copy = src;
     if (copy) {
-      src.reset();
+      raw = nullptr;
     } else {
       EXPECT_FALSE(copy);
     }
@@ -34,14 +36,15 @@ TEST(intrusive_ptr, bool_conversion_from_copy) {
 }
 
 TEST(intrusive_ptr, bool_conversion_from_derived) {
-  crimson_cell::intrusive_ptr<RefCountedObjectExtension> src{
-      new RefCountedObjectExtension};
+  RefCountedObjectExtension* raw = new RefCountedObjectExtension;
 
   for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObjectExtension> src;
+    src.reset(raw);
     crimson_cell::intrusive_ptr<RefCountedObject> base;
     base = src;
     if (base) {
-      src.reset();
+      raw = nullptr;
     } else {
       EXPECT_FALSE(base);
     }
