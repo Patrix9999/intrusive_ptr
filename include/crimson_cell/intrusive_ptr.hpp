@@ -2,7 +2,7 @@
 /*
 
 ____ ____ _ _  _ ____ ____ _  _     ____ ____ _    _      intrusive_ptr for C++ 20
-|    |__/ | |\/| [__  |  | |\ |     |    |___ |    |      version: 1.0.0
+|    |__/ | |\/| [__  |  | |\ |     |    |___ |    |      version: 1.0.1
 |___ |  \ | |  | ___] |__| | \| ___ |___ |___ |___ |___   https://github.com/Patrix9999/intrusive_ptr
                                                                                         
 MIT License
