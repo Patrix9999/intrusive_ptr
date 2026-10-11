@@ -84,3 +84,22 @@ TEST(intrusive_ptr, conversion_size) {
   EXPECT_EQ(sizeof(crimson_cell::intrusive_ptr<RefCountedObject>),
             sizeof(crimson_cell::intrusive_ptr<RefCountedObjectExtension>));
 }
+
+TEST(intrusive_ptr, dynamic_pointer_cast_null) {
+  const crimson_cell::intrusive_ptr<RefCountedObject> base;
+
+  const auto extension =
+      crimson_cell::dynamic_pointer_cast<RefCountedObjectExtension>(base);
+
+  EXPECT_EQ(extension, nullptr);
+}
+
+TEST(intrusive_ptr, dynamic_pointer_cast_failed) {
+  const crimson_cell::intrusive_ptr base{new RefCountedObject};
+
+  const auto extension =
+      crimson_cell::dynamic_pointer_cast<RefCountedObjectExtension>(base);
+
+  EXPECT_EQ(extension, nullptr);
+  EXPECT_EQ(base->RefCount(), 1);
+}
