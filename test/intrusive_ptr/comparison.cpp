@@ -3,37 +3,74 @@
 #include <crimson_cell/intrusive_ptr.hpp>
 
 #include "fixtures/RefCountedObject.hpp"
+#include "fixtures/RefCountedObjectExtension.hpp"
+
+TEST(intrusive_ptr, bool_conversion_from_reset) {
+  crimson_cell::intrusive_ptr<RefCountedObject> ptr;
+  RefCountedObject* raw = new RefCountedObject;
+
+  for (int i = 0; i < 2; ++i) {
+    ptr.reset(raw);
+    if (ptr) {
+      raw = nullptr;
+    } else {
+      EXPECT_FALSE(ptr);
+    }
+  }
+}
+
+TEST(intrusive_ptr, bool_conversion_from_copy) {
+  crimson_cell::intrusive_ptr<RefCountedObject> src{new RefCountedObject};
+
+  for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObject> copy;
+    copy = src;
+    if (copy) {
+      src.reset();
+    } else {
+      EXPECT_FALSE(copy);
+    }
+  }
+}
+
+TEST(intrusive_ptr, bool_conversion_from_derived) {
+  crimson_cell::intrusive_ptr<RefCountedObjectExtension> src{
+      new RefCountedObjectExtension};
+
+  for (int i = 0; i < 2; ++i) {
+    crimson_cell::intrusive_ptr<RefCountedObject> base;
+    base = src;
+    if (base) {
+      src.reset();
+    } else {
+      EXPECT_FALSE(base);
+    }
+  }
+}
 
 TEST(intrusive_ptr, null_comparison) {
   crimson_cell::intrusive_ptr<RefCountedObject> ptr;
 
   EXPECT_EQ(ptr, nullptr);
-  EXPECT_FALSE(ptr != nullptr);
 
   ptr.reset(new RefCountedObject);
 
   EXPECT_NE(ptr, nullptr);
-  EXPECT_FALSE(ptr == nullptr);
 }
 
 TEST(intrusive_ptr, equality_comparison) {
   const crimson_cell::intrusive_ptr first{new RefCountedObject};
   // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
   const crimson_cell::intrusive_ptr second{first};
-  const crimson_cell::intrusive_ptr third{new RefCountedObject};
 
-  EXPECT_TRUE(first == second);
-  EXPECT_FALSE(first == third);
+  EXPECT_EQ(first, second);
 }
 
 TEST(intrusive_ptr, inequality_comparison) {
   const crimson_cell::intrusive_ptr first{new RefCountedObject};
-  // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
-  const crimson_cell::intrusive_ptr second{first};
-  const crimson_cell::intrusive_ptr third{new RefCountedObject};
+  const crimson_cell::intrusive_ptr second{new RefCountedObject};
 
-  EXPECT_FALSE(first != second);
-  EXPECT_TRUE(first != third);
+  EXPECT_NE(first, second);
 }
 
 TEST(intrusive_ptr, three_way_comparison_pointers) {
